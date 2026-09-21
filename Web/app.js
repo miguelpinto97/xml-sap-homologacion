@@ -604,6 +604,7 @@ async function addCustomField(sheetName, block, form) {
     fieldInput.value = '';
     descriptionInput.value = '';
     await loadCustomFields();
+    showToast('Campo nuevo agregado.');
     renderTable();
   } catch (error) {
     submit.disabled = false;
@@ -755,6 +756,7 @@ async function saveFieldValue(sheet, row, input, button, suggestedValue, hasOthe
     });
     if (!response.ok) throw new Error('No se pudo guardar el valor.');
     await loadFieldValues();
+    showToast(!value ? 'Valor eliminado.' : validated ? 'Valor validado.' : 'Valor guardado.');
         if (state.data) {
           renderSummary();
           renderTabs();

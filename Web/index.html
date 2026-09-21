@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homologacion de campos SAP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section class="company-gate" id="company-gate" aria-labelledby="company-title">
+    <div class="company-panel">
+      <p class="eyebrow">Acceso interno</p>
+      <h2 id="company-title">Selecciona tu empresa</h2>
+      <p>Al continuar declaras que perteneces a la empresa seleccionada.</p>
+      <div class="company-options" id="company-options"></div>
+    </div>
+  </section>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">SAP</div>
+    <div>
+      <p class="eyebrow">Diccionario de integracion</p>
+      <h1>Homologacion de campos XML</h1>
+    </div>
+    <div class="source-badge">Fuente <strong>Excel</strong></div>
+  </header>
+
+  <main class="layout">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">Vista de trabajo</p>
+        <h2>Campos, valores y equivalencias</h2>
+        <p class="description">Explora las hojas del libro y consulta sus datos en tablas filtrables.</p>
+      </div>
+      <div class="summary" id="summary" aria-live="polite"></div>
+    </section>
+
+    <nav class="tabs" id="tabs" aria-label="Hojas del libro"></nav>
+
+    <section class="toolbar">
+      <label class="search-box" for="search">
+        <span aria-hidden="true">⌕</span>
+        <input id="search" type="search" placeholder="Buscar campo, descripcion o valor..." autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+      <button class="clear-button" id="clear-search" type="button" hidden>Limpiar</button>
+      <span class="result-count" id="result-count"></span>
+    </section>
+
+    <section class="table-view" id="table-view" aria-live="polite">
+      <div class="empty-state" id="empty-state" hidden>No hay filas que coincidan con la busqueda.</div>
+    </section>
+  </main>
+  <footer>Homologacion_Campos_XML_SAP.xlsx <span>•</span> datos extraidos a JSON</footer>
+  <aside class="floating-field-panel" id="floating-field-panel" hidden>
+    <div class="floating-field-head">
+      <strong>Agregar campo nuevo</strong>
+      <button type="button" id="close-field-panel" aria-label="Cerrar">×</button>
+    </div>
+    <p>Se agregará en la sección exclusiva de la pestaña activa.</p>
+    <form id="floating-field-form">
+      <input name="fieldName" required placeholder="Campo / Tag XML">
+      <input name="description" required placeholder="Descripcion">
+      <input name="sapField" required placeholder="Campo SAP">
+      <button type="button" id="new-field-scope" class="scope-switch" role="switch" aria-checked="false" title="Ambito del campo nuevo">
+        <span class="scope-knob" aria-hidden="true"></span>
+        <span class="scope-label">Cabecera</span>
+      </button>
+      <input type="hidden" name="scope" value="cabecera">
+      <button type="submit">Guardar campo</button>
+    </form>
+  </aside>
+  <button class="floating-field-button" id="open-field-panel" type="button" hidden>+ Campo nuevo</button>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[build]
+  publish = "Web"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["homologacion_campos_sap.json"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# SPA fallback: todo lo que no sea /api/* ni archivo estatico va a index.html.
+# Debe ir despues del redirect de /api/*.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,7 +1,26 @@
 const serverless = require('serverless-http');
 const { app, initializeDatabase } = require('../../server');
 
-const handler = serverless(app);
+// serverless-http 3.x + Express 5: el stream del body puede llegar vacio a
+// express.json(). Pre-parseamos event.body aqui y lo dejamos en req para que
+// server.js lo use como respaldo.
+function parseEventBody(event) {
+  const raw = event.body;
+  if (raw == null || raw === '') return undefined;
+  try {
+    const text = event.isBase64Encoded ? Buffer.from(raw, 'base64').toString('utf8') : raw;
+    return JSON.parse(text);
+  } catch {
+    return undefined;
+  }
+}
+
+const handler = serverless(app, {
+  request(req, event) {
+    const preparsed = parseEventBody(event);
+    if (preparsed !== undefined) req._preparsedBody = preparsed;
+  },
+});
 let initialization;
 
 exports.handler = async (event, context) => {

@@ -25,6 +25,24 @@ function getSql() {
 
 const app = express();
 app.use(express.json());
+// Respaldo serverless (ver netlify/functions/api.js): serverless-http expone el
+// body crudo como Buffer en req.body y el json-parser de Express 5 no siempre
+// lo procesa. Parsealo aqui; si no hay body util, usa el pre-parseo del evento.
+app.use((req, _response, next) => {
+  if (Buffer.isBuffer(req.body)) {
+    const text = req.body.toString('utf8');
+    try {
+      req.body = text ? JSON.parse(text) : {};
+    } catch {
+      req.body = {};
+    }
+  }
+  const empty =
+    req.body === undefined ||
+    (typeof req.body === 'object' && req.body !== null && Object.keys(req.body).length === 0);
+  if (empty && req._preparsedBody !== undefined) req.body = req._preparsedBody;
+  next();
+});
 
 async function createSchema(sql) {
   await sql`CREATE TABLE IF NOT EXISTS documents (
